@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-light rounded" aria-label="Thirteenth navbar example">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarsExample11" aria-controls="navbarsExample11" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
+                    <a class="navbar-brand col-lg-3 me-0" href="#">ReadNation</a>
+                    <ul class="navbar-nav col-lg-6 justify-content-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/author">Author</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/reader">Reader</a>
+                        </li>
+                    </ul>
+                    <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+
+                        <form method="get" action="/user/author/settings">
+                                    <button type="submit"
+                                        class="btn btn-primary">Settings</button>
+                                </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main style=" margin-top: 20px">
+
+    <div class="row justify-content-center">
+        <% blog.forEach(function(blogRow){ %>
+
+            <h2 style="width:50%; text-align:center">
+                <%= blogRow.blog_title %>
+            </h2>
+            <h4 style="width:90%; text-align:center">
+                <%= blogRow.blog_subtitle %>
+            </h4>
+            <h5 style="width:90%; text-align:center">
+                <%= blogRow.author %>
+            </h5>
+
+            <% }); %>
+    </div>
+
+
+
+    <div class="row justify-content-center">
+        <h4 style="width:82%">Draft</h4>
+
+        <table style="width:80%" class="table table-striped table-responsive-md btn-table table-bordered p-1">
+            <thead>
+              <tr>
+                <th style="width:2%">#</th>
+                <th style="width:15%">Title</th>
+                <th style="width:15%">Subtitle</th>
+                <th style="width:15%">Date Created</th>
+                <th style="width:15%">Last Modified</th>
+                <th style="width:5%"></th>
+                <th style="width:5%"></th>
+                <th style="width:5%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% var rowNum1 = 1; %>
+              <% if(articles.length> 0){
+                  articles.forEach(function(rows){ %>
+                  <tr>
+                      <% if(rows.status==false){ %>
+                          <th scope="row"><%= rowNum %></th>
+                          <td>
+                            <%= rows.title %>
+                          </td>
+                          <td>
+                            <%= rows.subtitle %>
+                          </td>
+                          <td>
+                            <%= rows.date_created %>
+                          </td>
+                          <td>
+                            <%= rows.last_modified %>
+                          </td>
+                          <td>
+                            <form method="post" action="/user/author/publish/<%= rows.id %>">
+                              <button type="submit"
+                                class="btn btn-outline-primary btn-sm m-0 waves-effect">Publish</button>
+                            </form>
+                          </td>
+                          <td>
+                            <form method="get" action="/user/author/edit/<%= rows.id %>">
+                              <button type="submit"
+                                class="btn btn-outline-primary btn-sm m-0 waves-effect">Edit</button>
+                            </form>
+                          </td>
+                          <td>
+                            <a href="/user/author/delete/<%= rows.id %>" <button type="button"
+                              class="btn btn-outline-primary btn-sm m-0 waves-effect">
+                                Delete
+                            </button> </a>
+                          </td>
+                      <% } %>
+                  </tr>
+                  <% rowNum1++; %>
+                  <% }); } else { %>
+                      <tr>
+                          <td colspan="5">No Data Found</td>
+                      </tr>
+              <% } %>
+            </tbody>
+          </table>
+    </div>
+    <div class="row justify-content-center">
+        <a style="width:10%" class="btn btn-outline-primary btn-sm m-0 waves-effect" id="insertRow"
+            href="/user/editArticle">Add Article</a>
+    </div>
+
+    <div style=" margin-top: 20px" class="row justify-content-center">
+
+        <h4 style="width:82%">Published</h4>
+
+        <table style="width:80%" class="table table-striped table-responsive-md btn-table table-bordered">
+            <thead>
+              <tr>
+                <th style="width:2%">#</th>
+                <th style="width:15%">Title</th>
+                <th style="width:20%">Subtitle</th>
+                <th style="width:15%">Published</th>
+                <th style="width:5%">Likes</th>
+                <th style="width:5%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% var rowNum = 1; %>
+              <% if(articles.length> 0){
+                  articles.forEach(function(rows){ %>
+                  <tr>
+                      <%if(rows.status==true){ %>
+                          <th scope="row"><%= rowNum %></th>
+                          <td>
+                            <%= rows.title %>
+                          </td>
+                          <td>
+                            <%= rows.subtitle %>
+                          </td>
+                          <td>
+                            <%= rows.date_posted %>
+                          </td>
+                          <td>
+                            <%= rows.likes %>
+                          </td>
+                          <td>
+                            <a href="/user/author/delete/<%= rows.id %>" <button type="button"
+                                class="btn btn-outline-primary btn-sm m-0 waves-effect">Delete</button> </a>
+                          </td>
+                      <% } %>
+                  </tr>
+                  <% rowNum++; %>
+                  <% }); } else { %>
+                      <tr>
+                          <td colspan="5">No Data Found</td>
+                      </tr>
+              <% } %>
+            </tbody>
+          </table>
+    </div>
+</main>
+
+</body>
+
+</html>
